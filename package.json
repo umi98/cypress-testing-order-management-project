@@ -1,0 +1,18 @@
+{
+  "name": "learn-cypress-01",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.20.0",
+  "devDependencies": {
+    "cypress": "^15.6.0",
+    "cypress-iframe": "^1.0.1",
+    "dotenv": "^17.2.3"
+  }
+}

@@ -1,0 +1,8 @@
+{
+    "invalidUser": {
+        "email": "explore_ap@yopmail.com",
+        "password": "123"
+    },
+    "invalidEmailFormat": "macc",
+    "unregisteredEmail": "explore_app2@yopmail.com"
+}
