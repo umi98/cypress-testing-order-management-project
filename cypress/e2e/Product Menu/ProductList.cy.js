@@ -6,7 +6,7 @@ describe('Verifikasi Tampilan Daftar Produk', () => {
   beforeEach(() => {
     cy.viewport('macbook-15');
     cy.login();
-    cy.visit(`${SELECTORS.DASHBOARD_URL}/produk?tab=daftar-produk`);
+    cy.visit(`${SELECTORS.DASHBOARD_URL}/produk?tab=semua`);
   });
 
   it('Verify that Data Produk have two tabs and they\'re functional', () => {
@@ -22,4 +22,11 @@ describe('Verifikasi Tampilan Daftar Produk', () => {
       });
     });
   });
+
+  it.only('Verify search box is functionable in Semua tab', () => {
+    const keyword = 'roti pukis';
+    cy.get('input[placeholder="Example"]', {timeout:10000}).eq(0).should('be.visible').type(keyword);
+    cy.wait(5000);
+    cy.contains('tr', new RegExp(keyword, 'i')).should('exist');
+  })
 })

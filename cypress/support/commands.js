@@ -17,7 +17,7 @@ Cypress.Commands.add('login', () => {
             });
         });
         cy.wait(20000); // Bisa ditambah atau dikurangi, menyesuaikan respon server
-        cy.url().then((currentUrl) => {
+        cy.url({ timeout: 20000 }).then((currentUrl) => {
             if (currentUrl.includes('/talent')) {
                 cy.url().should('eq', TALENT_URL);
             } else if (currentUrl === SELECTORS.DASHBOARD_URL || currentUrl === `${SELECTORS.DASHBOARD_URL}/`) {
