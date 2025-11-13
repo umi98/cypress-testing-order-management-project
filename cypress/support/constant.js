@@ -5,5 +5,6 @@ export const SELECTORS = {
     LOGIN_SUBMIT_BUTTON_SELECTOR: 'button[type="submit"]',
     LOGIN_MODAL_CONTENT_SELECTOR: '.ant-modal-content',
     LOGIN_ERROR_EXPLAIN_SELECTOR: '.ant-form-item-explain-error',
+    SIDE_MENU_BAR: 'ul.navigation-main',
     DASHBOARD_URL: Cypress.env("DASHBOARD_URL")
 }
