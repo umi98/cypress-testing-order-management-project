@@ -67,6 +67,8 @@ Contact the project owner to obtain the required .env files before running the t
 |2025-11-13|Edit|Edit e2e/ProductMenu/ProductList.cy.js to add checking table headers|
 |2025-11-13|Edit|Edit e2e/ProductMenu/ProductList.cy.js to add checking action buttons|
 |2025-11-14|Edit|Edit e2e/ProductMenu/ProductList.cy.js and ProductMenu.cy.js to remove comments|
+|2025-11-14|Add|Add test for add product (without variation) as draft and active|
+|2025-11-14|Add|Add fixtures/productData.json|
 
 ## 📚 Notes
 * Use fixtures/loginData.json to store test credentials or reusable mock data.

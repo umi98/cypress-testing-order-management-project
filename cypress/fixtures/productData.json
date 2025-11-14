@@ -1,0 +1,32 @@
+[
+  {
+    "namaProduk": "Produk 1 juta",
+    "sku": "SKU-001",
+    "deskripsi": "Lorem ipsum dolor set amet",
+    "harga": "1000000",
+    "stok": "800",
+    "berat": "200",
+    "volume": {
+      "panjang" : "10",
+      "lebar": "15",
+      "tinggi": "10"
+    },
+    "image": "sample-img.jpg",
+    "file": "sample-doc.pdf"
+  },
+  {
+    "namaProduk": "Kayu Jati",
+    "sku": "SKU-002",
+    "deskripsi": "Lorem ipsum dolor set amet",
+    "harga": "100000",
+    "stok": "800",
+    "berat": "1200",
+    "volume": {
+      "panjang" : "100",
+      "lebar": "15",
+      "tinggi": "10"
+    },
+    "image": "sample-img.jpg",
+    "file": "sample-doc.pdf"
+  }
+]
