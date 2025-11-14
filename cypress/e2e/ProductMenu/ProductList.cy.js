@@ -82,7 +82,7 @@ describe('Verifikasi Tampilan Daftar Produk', () => {
     cy.contains(/buat bundling/i).should('exist');
   })
 
-  it.only('should delete product when icon trash clicked', () => {
+  it('should delete product when icon trash clicked', () => {
     cy.get('table tbody tr').last().find('td').eq(1).invoke('text').as('productName');
     cy.get('table tbody tr').last().within(() => {
       cy.get('img[alt="trash"]').click({ force: true });

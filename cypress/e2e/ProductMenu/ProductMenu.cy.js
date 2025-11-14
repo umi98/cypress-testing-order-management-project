@@ -7,9 +7,6 @@
 // tambahan buat tambah order:
 // verifikasi dengan cek di daftar produk, entri paling baru ada di urutan paling bawah
 
-// daftar order memiliki dua tab: Semua dan Draft
-// verifikasi element di halaman: search box, filter button, tabel (header: nama produk, variasi, harga, stock, terjual, aksi: edit, bundlijg, hapus)
-// cek fungsionalitas filter: cek tombol terapkan dan reset
 import { SELECTORS } from "../../support/constant";
 
 describe('Menu Verification: Product', () => {

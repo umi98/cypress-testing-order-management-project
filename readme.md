@@ -64,8 +64,9 @@ Contact the project owner to obtain the required .env files before running the t
 |2025-11-12|Add|Add files on Product Menu Folder|
 |2025-11-12|Add|Add test for Product Menu|
 |2025-11-13|Add|Add test for Daftar Produk page|
-|2025-11-13|Edit|Edit e22/ProductMenu/ProductList.cy.js to add checking table headers|
-|2025-11-13|Edit|Edit e22/ProductMenu/ProductList.cy.js to add checking action buttons|
+|2025-11-13|Edit|Edit e2e/ProductMenu/ProductList.cy.js to add checking table headers|
+|2025-11-13|Edit|Edit e2e/ProductMenu/ProductList.cy.js to add checking action buttons|
+|2025-11-14|Edit|Edit e2e/ProductMenu/ProductList.cy.js and ProductMenu.cy.js to remove comments|
 
 ## 📚 Notes
 * Use fixtures/loginData.json to store test credentials or reusable mock data.
