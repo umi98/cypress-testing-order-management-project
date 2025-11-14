@@ -73,3 +73,4 @@ Contact the project owner to obtain the required .env files before running the t
 * The constants in support/constant.js help maintain test consistency.
 * Always run tests in a clean environment for reliable results.
 * Environment variables required for test execution are stored in .env files (contact the project owner to access them).
+* For latest update check on original repository [here](https://github.com/umi98/cypress-testing-order-management-project)
