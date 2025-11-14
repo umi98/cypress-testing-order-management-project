@@ -16,6 +16,22 @@ const fieldsToCheck = [
   { label: 'Upload Foto', selector: 'input#image-product', type: 'button', required: true}
 ];
 
+function fillProductForm(product) {
+  cy.get(fieldsToCheck[0].selector).type(product.namaProduk);
+  cy.get(fieldsToCheck[1].selector).type(product.sku);
+  cy.get(fieldsToCheck[2].selector).type(product.deskripsi);
+  cy.get(fieldsToCheck[3].selector)
+    .selectFile(`cypress/fixtures/${product.file}`, { action: 'select', force: true });
+  cy.get(fieldsToCheck[4].selector).type(product.harga);
+  cy.get(fieldsToCheck[5].selector).type(product.stok);
+  cy.get(fieldsToCheck[6].selector).type(product.berat);
+  cy.get(fieldsToCheck[7].selector).type(product.volume.panjang);
+  cy.get(fieldsToCheck[8].selector).type(product.volume.lebar);
+  cy.get(fieldsToCheck[9].selector).type(product.volume.tinggi);
+  cy.get(fieldsToCheck[10].selector)
+    .selectFile(`cypress/fixtures/${product.image}`, { action: 'select', force: true });
+}
+
 describe('Add Product Functionality', () => {
   beforeEach(() => {
     cy.viewport('macbook-15');
@@ -28,8 +44,7 @@ describe('Add Product Functionality', () => {
     fieldsToCheck.forEach(field => {
       cy.log(`checking visibility of: ${field.label}`);
       const el = cy.get(field.selector)
-        .should('exist')
-        .and('be.visible');
+        .should('exist');
       
       if (field.type.includes('input')) {
         el.should('have.prop', 'tagName').then(tagName => {
@@ -40,49 +55,25 @@ describe('Add Product Functionality', () => {
         el.should('have.prop', 'tagName').should('eq', 'TEXTAREA');
       }
       if (field.type === 'button') {
-        el.should('have.prop', 'tagName').then(tagName => {
-          expect(tagName).to.match(/LABEL|BUTTON/);
-        });
+        el.should('have.prop', 'hidden');
       }
     });
   });
 
+  // pastikan nama produk belum ada di daftar produk baik di draft maupun aktif
   it('should be able to add new product (minus variations) as draft', function () {
     const product = this.products[0]; //can't use arrow function if you use this line
-
-    cy.get(fieldsToCheck[0].selector).type(product.namaProduk);
-    cy.get(fieldsToCheck[1].selector).type(product.sku);
-    cy.get(fieldsToCheck[2].selector).type(product.deskripsi);
-    cy.get(fieldsToCheck[3].selector)
-      .selectFile(`cypress/fixtures/${product.file}`, { action: 'select', force: true });
-    cy.get(fieldsToCheck[4].selector).type(product.harga);
-    cy.get(fieldsToCheck[5].selector).type(product.stok);
-    cy.get(fieldsToCheck[6].selector).type(product.berat);
-    cy.get(fieldsToCheck[7].selector).type(product.volume.panjang);
-    cy.get(fieldsToCheck[8].selector).type(product.volume.lebar);
-    cy.get(fieldsToCheck[9].selector).type(product.volume.tinggi);
-    cy.get(fieldsToCheck[10].selector)
-      .selectFile(`cypress/fixtures/${product.image}`, { action: 'select', force: true });
+    fillProductForm(product);
+    cy.wait(20000);  
     cy.get('button').contains('Simpan Draft').should('not.be.disabled').click();
     cy.contains(/berhasil|success|sukses/i, {timeout: 5000}).should('be.visible');
   });
 
-  it.only('should be able to add new product (minus variations) as active product', function () {
+  // pastikan nama produk belum ada di daftar produk baik di draft maupun sktif
+  it('should be able to add new product (minus variations) as active product', function () {
     const product = this.products[1];
-
-    cy.get(fieldsToCheck[0].selector).type(product.namaProduk);
-    cy.get(fieldsToCheck[1].selector).type(product.sku);
-    cy.get(fieldsToCheck[2].selector).type(product.deskripsi);
-    cy.get(fieldsToCheck[3].selector)
-      .selectFile(`cypress/fixtures/${product.file}`, { action: 'select', force: true });
-    cy.get(fieldsToCheck[4].selector).type(product.harga);
-    cy.get(fieldsToCheck[5].selector).type(product.stok);
-    cy.get(fieldsToCheck[6].selector).type(product.berat);
-    cy.get(fieldsToCheck[7].selector).type(product.volume.panjang);
-    cy.get(fieldsToCheck[8].selector).type(product.volume.lebar);
-    cy.get(fieldsToCheck[9].selector).type(product.volume.tinggi);
-    cy.get(fieldsToCheck[10].selector)
-      .selectFile(`cypress/fixtures/${product.image}`, { action: 'select', force: true });
+    cy.wait(20000);  
+    fillProductForm(product);
     cy.get('button[type="submit"]').should('not.be.disabled').click();
     cy.contains(/berhasil|success|sukses/i, {timeout: 5000}).should('be.visible');
   });

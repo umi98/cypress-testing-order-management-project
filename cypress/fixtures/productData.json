@@ -5,7 +5,7 @@
     "deskripsi": "Lorem ipsum dolor set amet",
     "harga": "1000000",
     "stok": "800",
-    "berat": "200",
+    "berat": "250",
     "volume": {
       "panjang" : "10",
       "lebar": "15",
@@ -20,7 +20,7 @@
     "deskripsi": "Lorem ipsum dolor set amet",
     "harga": "100000",
     "stok": "800",
-    "berat": "1200",
+    "berat": "2500",
     "volume": {
       "panjang" : "100",
       "lebar": "15",
