@@ -17,8 +17,8 @@ const fieldsToCheck = [
 ];
 
 function fillProductForm(product) {
-  cy.get(fieldsToCheck[0].selector).type(product.namaProduk);
-  cy.get(fieldsToCheck[1].selector).type(product.sku);
+  cy.get(fieldsToCheck[0].selector).clear().type(product.namaProduk, { delay: 1000 });
+  cy.get(fieldsToCheck[1].selector).type(product.sku, { delay: 1000 });
   cy.get(fieldsToCheck[2].selector).type(product.deskripsi);
   cy.get(fieldsToCheck[3].selector)
     .selectFile(`cypress/fixtures/${product.file}`, { action: 'select', force: true });
@@ -64,7 +64,6 @@ describe('Add Product Functionality', () => {
   it('should be able to add new product (minus variations) as draft', function () {
     const product = this.products[0]; //can't use arrow function if you use this line
     fillProductForm(product);
-    cy.wait(20000);  
     cy.get('button').contains('Simpan Draft').should('not.be.disabled').click();
     cy.contains(/berhasil|success|sukses/i, {timeout: 5000}).should('be.visible');
   });
@@ -72,12 +71,21 @@ describe('Add Product Functionality', () => {
   // pastikan nama produk belum ada di daftar produk baik di draft maupun sktif
   it('should be able to add new product (minus variations) as active product', function () {
     const product = this.products[1];
-    cy.wait(20000);  
     fillProductForm(product);
     cy.get('button[type="submit"]').should('not.be.disabled').click();
     cy.contains(/berhasil|success|sukses/i, {timeout: 5000}).should('be.visible');
   });
 
+  // terkadang small.text-primary butuh waktu lama untuk muncul sehingga ada kemungkinan test ini gagal
+  it.only('should disable button when Judul Produk is duplicate with existing product', function () {
+    const product = this.products[0];
+    fillProductForm(product);
+    cy.get('small.text-primary').eq(0).should('contain.text', '*Nama produk sudah dipakai');
+    cy.get('small.text-primary').eq(1).should('contain.text', '*SKU sudah digunakan');
+    cy.get('button[type="submit"]').should('be.disabled');
+    cy.get('button').contains('Simpan Draft').should('be.disabled');
+  })
+  
   it('should be able to add new product with variations as draft', () => {});
 
   it('should be able to add new product with variations as active product', () => {});

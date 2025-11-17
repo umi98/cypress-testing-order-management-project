@@ -10,6 +10,7 @@ Cypress.Commands.add('accessIframe', (iframeSelector) => {
 Cypress.Commands.add('login', () => {
     cy.session('userSession', () => {
         cy.visit(SELECTORS.DASHBOARD_URL);
+        cy.wait(10000);
         cy.fixture('loginData').then((data) => {
             cy.accessIframe(SELECTORS.IFRAME_SELECTOR).within(() => {
                 cy.get(SELECTORS.USERNAME_SELECTOR).type(Cypress.env("EMAIL"));
