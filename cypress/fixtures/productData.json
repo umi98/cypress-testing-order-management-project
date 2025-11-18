@@ -28,5 +28,109 @@
     },
     "image": "sample-img.jpg",
     "file": "sample-doc.pdf"
+  },
+  {
+    "namaProduk": "Meja Adjustable",
+    "sku": "SKU-003",
+    "deskripsi": "Meja dengan tinggi adjustable. Dengan model yang dirakit sendiri memberikan kemudahan dalam pengiriman dan pengemasan. Disediakan pula petunjuk pemasakan, obeng, dan alat-alat lain. Tersedia berbagai variasi pilihan. Semua varian memiliki tinggi yang bisa diatur dari 60 cm hingga 110 cm.",
+    "variasi": [
+      {
+        "nama": "Tampilan",
+        "pilihan": ["Jati", "Walnut"]
+      },
+      {
+        "nama": "Ukuran (p x l)",
+        "pilihan": ["30 x 60", "30 x 80", "45 x 85"]
+      },
+      {
+        "nama": "Tingkat",
+        "pilihan": ["1 tingkat", "2 tingkat", "3 tingkat"]
+      }
+    ],
+    "kombinasi": {
+      "stok": [
+        [
+          [50, 50, 50],
+          [50, 50, 50],
+          [50, 50, 50]
+        ],
+        [
+          [50, 50, 50],
+          [50, 50, 50],
+          [50, 50, 50]
+        ]
+      ],
+      "harga": [
+        [
+          [70000, 130000, 240000],
+          [80000, 150000, 260000],
+          [90000, 170000, 280000]
+        ],
+        [
+          [70000, 130000, 240000],
+          [80000, 150000, 260000],
+          [90000, 170000, 280000]
+        ]
+      ]
+    },
+    "berat": "7500",
+    "volume": {
+      "panjang": "90",
+      "lebar": "50",
+      "tinggi": "10"
+    },
+    "image": "sample-img2.jpg"
+  },
+  {
+    "namaProduk": "Meja Lipat",
+    "sku": "SKU-004",
+    "deskripsi": "Meja dengan tinggi adjustable. Dengan model yang dirakit sendiri memberikan kemudahan dalam pengiriman dan pengemasan. Disediakan pula petunjuk pemasakan, obeng, dan alat-alat lain. Tersedia berbagai variasi pilihan. Semua varian memiliki tinggi yang bisa diatur dari 60 cm hingga 110 cm.",
+    "variasi": [
+      {
+        "nama": "Tampilan",
+        "pilihan": ["Jati", "Walnut"]
+      },
+      {
+        "nama": "Ukuran (p x l)",
+        "pilihan": ["30 x 60", "30 x 80", "45 x 85"]
+      },
+      {
+        "nama": "Tingkat",
+        "pilihan": ["1 tingkat", "2 tingkat", "3 tingkat"]
+      }
+    ],
+    "kombinasi": {
+      "stok": [
+        [
+          [50, 50, 50],
+          [50, 50, 50],
+          [50, 50, 50]
+        ],
+        [
+          [50, 50, 50],
+          [50, 50, 50],
+          [50, 50, 50]
+        ]
+      ],
+      "harga": [
+        [
+          [70000, 130000, 240000],
+          [80000, 150000, 260000],
+          [90000, 170000, 280000]
+        ],
+        [
+          [70000, 130000, 240000],
+          [80000, 150000, 260000],
+          [90000, 170000, 280000]
+        ]
+      ]
+    },
+    "berat": "7500",
+    "volume": {
+      "panjang": "90",
+      "lebar": "50",
+      "tinggi": "10"
+    },
+    "image": "sample-img2.jpg"
   }
 ]
