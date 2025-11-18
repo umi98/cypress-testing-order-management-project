@@ -3,35 +3,23 @@ import { cartesian, flattenMatrix3D } from "../../support/utils";
 
 const PRODUCT_LIST_URL = `${SELECTORS.DASHBOARD_URL}/produk?tab=semua`;
 const ADD_PRODUCT_URL = `${SELECTORS.DASHBOARD_URL}/add-produk`;
-const fieldsToCheck = [
-  { label: 'Nama Produk', selector: 'input#name-product', type: 'input text', required: true },
-  { label: 'SKU', selector: 'input#sku-product', type: 'input text', required: false },
-  { label: 'Deskripsi Produk', selector: 'textarea#description-product', type: 'textarea', required: true },
-  { label: 'Upload File', selector: 'input#doc', type: 'button', required: false },
-  { label: 'Harga', selector: 'input[placeholder="Contoh : 85000 (masukkan angka saja tanpa titik, koma atau karakter lain)"]', type: 'input number', required: true },
-  { label: 'Stok', selector: 'input#stock-product', type: 'input number', required: true },
-  { label: 'Berat Produk', selector: 'input[placeholder="(Contoh : 200)"]', type: 'input number', required: true },
-  { label: 'Volume', selector: 'input[placeholder="Panjang"]', type: 'input number', required: true },
-  { label: 'Volume', selector: 'input[placeholder="Lebar"]', type: 'input number', required: true },
-  { label: 'Volume', selector: 'input[placeholder="Tinggi"]', type: 'input number', required: true },
-  { label: 'Upload Foto', selector: 'input#image-product', type: 'button', required: true}
-];
+const pageElement = ADD_PRODUCT_SELECTOR;
 
 function fillProductForm(product) {
-  cy.get(fieldsToCheck[0].selector).clear().type(product.namaProduk, { delay: 1000 });
-  cy.get(fieldsToCheck[1].selector).type(product.sku, { delay: 1000 });
-  cy.get(fieldsToCheck[2].selector).type(product.deskripsi);
+  cy.get(pageElement[0].selector).clear().type(product.namaProduk, { delay: 1000 });
+  cy.get(pageElement[1].selector).type(product.sku, { delay: 1000 });
+  cy.get(pageElement[2].selector).type(product.deskripsi);
   if (product.file) {
-    cy.get(fieldsToCheck[3].selector)
+    cy.get(pageElement[3].selector)
       .selectFile(`cypress/fixtures/${product.file}`, { action: 'select', force: true });
   }
-  cy.get(fieldsToCheck[4].selector).type(product.harga);
-  cy.get(fieldsToCheck[5].selector).type(product.stok);
-  cy.get(fieldsToCheck[6].selector).type(product.berat);
-  cy.get(fieldsToCheck[7].selector).type(product.volume.panjang);
-  cy.get(fieldsToCheck[8].selector).type(product.volume.lebar);
-  cy.get(fieldsToCheck[9].selector).type(product.volume.tinggi);
-  cy.get(fieldsToCheck[10].selector)
+  cy.get(pageElement[4].selector).type(product.harga);
+  cy.get(pageElement[5].selector).type(product.stok);
+  cy.get(pageElement[6].selector).type(product.berat);
+  cy.get(pageElement[7].selector).type(product.volume.panjang);
+  cy.get(pageElement[8].selector).type(product.volume.lebar);
+  cy.get(pageElement[9].selector).type(product.volume.tinggi);
+  cy.get(pageElement[10].selector)
     .selectFile(`cypress/fixtures/${product.image}`, { action: 'select', force: true });
 }
 
@@ -86,8 +74,8 @@ describe('Add Product Functionality', () => {
     cy.fixture('productData').as('products');
   });
 
-  it('should display necessary fields and buttons', () => {
-    fieldsToCheck.forEach(field => {
+  it.only('should display necessary fields and buttons', () => {
+    pageElement.forEach(field => {
       cy.log(`checking visibility of: ${field.label}`);
       const el = cy.get(field.selector)
         .should('exist');
@@ -110,8 +98,8 @@ describe('Add Product Functionality', () => {
   it('should be able to add new product (minus variations) as draft', function () {
     const product = this.products[0]; //can't use arrow function if you use this line
     fillProductForm(product);
-    // cy.get('button').contains('Simpan Draft').should('not.be.disabled').click();
-    // cy.contains(/berhasil|success|sukses/i, {timeout: 5000}).should('be.visible');
+    cy.get('button').contains('Simpan Draft').should('not.be.disabled').click();
+    cy.contains(/berhasil|success|sukses/i, {timeout: 5000}).should('be.visible');
   });
 
   // pastikan nama produk belum ada di daftar produk baik di draft maupun sktif
@@ -132,14 +120,9 @@ describe('Add Product Functionality', () => {
     cy.get('button').contains('Simpan Draft').should('be.disabled');
   })
   
-  it.only('should be able to add new product with variations as draft', function () {
+  it('should be able to add new product with variations as draft', function () {
     const product = this.products[2];
     cy.log(product);
-    // cy.contains('button', 'Tambah Varian')
-		// .should('exist')
-    // .scrollIntoView()
-		// .click();
-    // addVariations(product);
   });
 
   it('should be able to add new product with variations as active product', () => {});
