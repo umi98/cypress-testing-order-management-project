@@ -72,6 +72,7 @@ Contact the project owner to obtain the required .env files before running the t
 |2025-11-17|Add|Add test to validate if product with same name and SKU exist|
 |2025-11-19|Edit|Edit AddProduct.cy.js and related file due to change on UI|
 |2025-11-19|Add|Add test for add with variations as draft|
+|2025-11-19|Add|Add test for add with variations as active product|
 
 ## 📚 Notes
 * Use fixtures/loginData.json to store test credentials or reusable mock data.

@@ -158,7 +158,7 @@ describe('Add Product Functionality', () => {
     cy.get('button').contains('Simpan Draft').should('be.disabled');
   })
   
-  it.only('should be able to add new product with variations as draft', function () {
+  it('should be able to add new product with variations as draft', function () {
     const product = this.products[2];
     
     cy.get('button').contains('Tambah Varian').should('be.visible');
@@ -197,7 +197,39 @@ describe('Add Product Functionality', () => {
     cy.get('div.font-medium').contains(product.namaProduk).should('exist');
   });
 
-  it('should be able to add new product with variations as active product', () => {});
+  it.only('should be able to add new product with variations as active product', function () {
+    const product = this.products[3];
+    
+    cy.get('button').contains('Tambah Varian').should('be.visible');
+    cy.get('.row.w-100.mx-1.mt-2.mb-2').should('not.exist');
+    
+    cy.get('button').contains('Tambah Varian').should('be.visible').click();
+    cy.get('button').contains('Tambah Varian').should('not.exist');
+
+    const maxVariation = 3;
+
+    for(let i = 0; i < Math.min(product.variasi.length, maxVariation); i++) {
+      const { nama, pilihan } = product.variasi[i];
+      if (i === 0) {
+        addVariations(nama, pilihan);
+      } else {
+        addAnotherVariationType(nama, pilihan);
+      }
+    }
+    
+    if (product.variasi.length >= maxVariation) {
+      cy.get('button').contains('Tambahkan tipe varian').should('not.exist');
+    }
+
+    applyVariation(product);
+
+    fillProductForm(product);
+
+    cy.get('button[type="submit"]').should('not.be.disabled').click();
+    cy.contains(/success/i, {timeout: 10000}).should('be.visible');
+    cy.url().should('include', 'tab=semua');
+    cy.get('div.font-medium').contains(product.namaProduk).should('exist');
+  });
 
   it('should show validation error when required fields are empty', () => {});
 })
