@@ -15,8 +15,10 @@ function fillProductForm(product) {
     }
   cy.get(pageElement[4].selector)
     .selectFile(`cypress/fixtures/${product.image}`, { action: 'select', force: true });
-  cy.get(pageElement[5].selector).type(product.harga);
-  cy.get(pageElement[6].selector).type(product.stok);
+  if (product.harga && product.stok) {
+    cy.get(pageElement[5].selector).type(product.harga);
+    cy.get(pageElement[6].selector).type(product.stok);
+  }
   cy.get(pageElement[7].selector).type(product.berat);
   cy.get(pageElement[8].selector).type(product.volume.panjang);
   cy.get(pageElement[9].selector).type(product.volume.lebar);
@@ -56,8 +58,40 @@ function addAnotherVariationType(variationName, choices = []) {
   addVariations(variationName, choices);
 }
 
-function applyVariation() {
+function applyVariation(product) {
+  const { kombinasi } = product;
   cy.get('button').contains('Terapkan Variasi').should('be.visible').click();
+  cy.get('h4').contains('Tabel Varian').should('exist');
+  cy.get('.table.b-table tbody tr').each((row, rowIndex) => {
+    const tampilanData = kombinasi.kodeVariasi[rowIndex];
+    const stokData = kombinasi.stok[rowIndex];
+    const hargaData = kombinasi.harga[rowIndex];
+
+    cy.wrap(row)
+      .find('input[type="file"]')
+      .selectFile(`cypress/fixtures/${kombinasi.gambarVariasi[rowIndex]}`, { action: 'select', force: true });
+
+    cy.wrap(row).find('td').eq(3).then(($kodeCell) => {
+      cy.wrap(row).find('td').eq(4).then(($stokCell) => {
+        cy.wrap(row).find('td').eq(5).then(($hargaCell) => {
+          tampilanData.forEach((ukuranGroup, ukuranIndex) => {
+            ukuranGroup.forEach((kode, tingkatIndex) => {
+              const inputIndex = (ukuranIndex * 3) + tingkatIndex;
+              cy.wrap($kodeCell).find('input').eq(inputIndex).clear().type(kode);
+            });
+            stokData[ukuranIndex].forEach((stok, tingkatIndex) => {
+              const inputIndex = (ukuranIndex * 3) + tingkatIndex;
+              cy.wrap($stokCell).find('input').eq(inputIndex).clear().type(stok.toString());
+            });
+            hargaData[ukuranIndex].forEach((harga, tingkatIndex) => {
+              const inputIndex = (ukuranIndex * 3) + tingkatIndex;
+              cy.wrap($hargaCell).find('input').eq(inputIndex).clear().type(harga.toString());
+            });
+          });
+        });
+      });
+    });
+  });
 }
 
 
@@ -90,7 +124,7 @@ describe('Add Product Functionality', () => {
   });
 
   // pastikan nama produk belum ada di daftar produk baik di draft maupun aktif
-  it.only('should be able to add new product (minus variations) as draft', function () {
+  it('should be able to add new product (minus variations) as draft', function () {
     const product = this.products[1]; //can't use arrow function if you use this line
     fillProductForm(product);
     cy.get('button').contains('Simpan Draft').should('not.be.disabled').click();
@@ -124,7 +158,7 @@ describe('Add Product Functionality', () => {
     cy.get('button').contains('Simpan Draft').should('be.disabled');
   })
   
-  it('should be able to add new product with variations as draft', function () {
+  it.only('should be able to add new product with variations as draft', function () {
     const product = this.products[2];
     
     cy.get('button').contains('Tambah Varian').should('be.visible');
@@ -148,7 +182,19 @@ describe('Add Product Functionality', () => {
       cy.get('button').contains('Tambahkan tipe varian').should('not.exist');
     }
 
-    applyVariation();
+    applyVariation(product);
+
+    fillProductForm(product);
+
+    cy.get('button').contains('Simpan Draft').should('not.be.disabled').click();
+    cy.contains(/success/i, {timeout: 10000}).should('be.visible');
+    cy.get('ul.nav-tabs').should('be.visible').within(() => {
+      cy.get('li.nav-item').eq(1).should('contain','Draft');
+      cy.get('li.nav-item').eq(1).click().then(() => {
+        cy.url().should('include', 'tab=draft');
+      });
+    });
+    cy.get('div.font-medium').contains(product.namaProduk).should('exist');
   });
 
   it('should be able to add new product with variations as active product', () => {});
