@@ -69,6 +69,8 @@ Contact the project owner to obtain the required .env files before running the t
 |2025-11-14|Edit|Edit e2e/ProductMenu/ProductList.cy.js and ProductMenu.cy.js to remove comments|
 |2025-11-14|Add|Add test for add product (without variation) as draft and active|
 |2025-11-14|Add|Add fixtures/productData.json|
+|2025-11-17|Add|Add test to validate if product with same name and SKU exist|
+|2025-11-19|Edit|Edit AddProduct.cy.js and related file due to change on UI|
 
 ## 📚 Notes
 * Use fixtures/loginData.json to store test credentials or reusable mock data.
