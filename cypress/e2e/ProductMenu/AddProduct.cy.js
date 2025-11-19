@@ -12,57 +12,52 @@ function fillProductForm(product) {
   if (product.file) {
     cy.get(pageElement[3].selector)
       .selectFile(`cypress/fixtures/${product.file}`, { action: 'select', force: true });
-  }
-  cy.get(pageElement[4].selector).type(product.harga);
-  cy.get(pageElement[5].selector).type(product.stok);
-  cy.get(pageElement[6].selector).type(product.berat);
-  cy.get(pageElement[7].selector).type(product.volume.panjang);
-  cy.get(pageElement[8].selector).type(product.volume.lebar);
-  cy.get(pageElement[9].selector).type(product.volume.tinggi);
-  cy.get(pageElement[10].selector)
+    }
+  cy.get(pageElement[4].selector)
     .selectFile(`cypress/fixtures/${product.image}`, { action: 'select', force: true });
+  cy.get(pageElement[5].selector).type(product.harga);
+  cy.get(pageElement[6].selector).type(product.stok);
+  cy.get(pageElement[7].selector).type(product.berat);
+  cy.get(pageElement[8].selector).type(product.volume.panjang);
+  cy.get(pageElement[9].selector).type(product.volume.lebar);
+  cy.get(pageElement[10].selector).type(product.volume.tinggi);
 }
 
-// function fillProductWithVariation(product) {
-//   cy.get(fieldsToCheck[0].selector).clear().type(product.namaProduk, { delay: 1000 });
-//   cy.get(fieldsToCheck[1].selector).type(product.sku, { delay: 1000 });
-//   cy.get(fieldsToCheck[2].selector).type(product.deskripsi);
-//   if (product.file) {
-//     cy.get(fieldsToCheck[3].selector)
-//       .selectFile(`cypress/fixtures/${product.file}`, { action: 'select', force: true });
-//   }
-//   cy.get('button').contains("Tambah Varian").click();
-//   cy.wait(3000);
-//   let counter = 0;
-//   do {
-//     for (let i = 0; i < product.variasi.length; i++){
-//       cy.get('input#variant-name').eq(counter).type(product.variasi[i][0]);
-//       cy.get('input#variant-name').eq(++counter).type(product.variasi[i][1][0]);
-//       if (product.variasi[i][1].length > 1) {
-//         for (let j = 1; j <= product.variasi[i][1]; j++){
-//           counter++;
-//           cy.get('input#variant-name').eq(counter).type(product.variasi[i][1][j]);
-//           if (j != product.variasi[i][1].length) 
-//             cy.get('button').contains("Tambah Pilihan").click();
-//         }
-//       }
-//     }
-//   } while (!cy.get('button').contains("Terapkan Variasi").click());
-//   cy.get(fieldsToCheck[6].selector).type(product.berat);
-//   cy.get(fieldsToCheck[7].selector).type(product.volume.panjang);
-//   cy.get(fieldsToCheck[8].selector).type(product.volume.lebar);
-//   cy.get(fieldsToCheck[9].selector).type(product.volume.tinggi);
-//   cy.get(fieldsToCheck[10].selector)
-//     .selectFile(`cypress/fixtures/${product.image}`, { action: 'select', force: true });
-// }
+function addVariations(variationName, choices = []) {
+  cy.get('button').contains('Hapus Varian').should('be.visible');
+  cy.get('.row.w-100.mb-2.ml-50').its('length').then((length) => {
+    const newIndex = length - 1;
+    const maxChoice = 8;
+    cy.log(`index: ${newIndex}`);
+    cy.log(`length: ${length}`);
+    cy.get('.row.w-100.mb-2.ml-50').eq(newIndex)
+      .find('input[placeholder="Contoh: Warna, Ukuran, Bahan"]')
+      .type(variationName);
+    choices.forEach((choice, choiceIndex) => {
+      if (choiceIndex === 0) {
+        cy.get('.row.w-100.mb-2.ml-50').eq(newIndex)
+          .find('input[placeholder="Contoh: Merah, XL, Cotton"]').eq(0).type(choice);
+      } else {
+        cy.get('.row.w-100.mb-2.ml-50').eq(newIndex)
+          .find('button').contains('Tambah Pilihan').should('be.visible').click();
+        cy.get('.row.w-100.mb-2.ml-50').eq(newIndex)
+          .find('input[placeholder="Contoh: Merah, XL, Cotton"]').eq(choiceIndex).type(choice);
+      }
 
-function addVariations(product) {
-  product.variasi.forEach((variation, index) => {
-    cy.addVariation(index, variation);
-  })
-  // cy.contains('button', 'Terapkan Variasi').click();
-  // const prices = flattenMatrix3D(product.kombinasi.harga);
-  // const stock = flattenMatrix3D(product.kombinasi.stok);
+      if (choiceIndex >= maxChoice) {
+        cy.get('button').contains('Tambah Pilihan').should('not.exist');
+      }
+    });
+  });
+}
+
+function addAnotherVariationType(variationName, choices = []) {
+  cy.get('button').contains('Tambahkan tipe varian').should('be.visible').click();
+  addVariations(variationName, choices);
+}
+
+function applyVariation() {
+  cy.get('button').contains('Terapkan Variasi').should('be.visible').click();
 }
 
 
@@ -74,7 +69,7 @@ describe('Add Product Functionality', () => {
     cy.fixture('productData').as('products');
   });
 
-  it.only('should display necessary fields and buttons', () => {
+  it('should display necessary fields and buttons', () => {
     pageElement.forEach(field => {
       cy.log(`checking visibility of: ${field.label}`);
       const el = cy.get(field.selector)
@@ -95,11 +90,18 @@ describe('Add Product Functionality', () => {
   });
 
   // pastikan nama produk belum ada di daftar produk baik di draft maupun aktif
-  it('should be able to add new product (minus variations) as draft', function () {
-    const product = this.products[0]; //can't use arrow function if you use this line
+  it.only('should be able to add new product (minus variations) as draft', function () {
+    const product = this.products[1]; //can't use arrow function if you use this line
     fillProductForm(product);
     cy.get('button').contains('Simpan Draft').should('not.be.disabled').click();
-    cy.contains(/berhasil|success|sukses/i, {timeout: 5000}).should('be.visible');
+    cy.contains(/success/i, {timeout: 10000}).should('be.visible');
+    cy.get('ul.nav-tabs').should('be.visible').within(() => {
+      cy.get('li.nav-item').eq(1).should('contain','Draft');
+      cy.get('li.nav-item').eq(1).click().then(() => {
+        cy.url().should('include', 'tab=draft');
+      });
+    });
+    cy.get('div.font-medium').contains(product.namaProduk).should('exist');
   });
 
   // pastikan nama produk belum ada di daftar produk baik di draft maupun sktif
@@ -107,7 +109,9 @@ describe('Add Product Functionality', () => {
     const product = this.products[1];
     fillProductForm(product);
     cy.get('button[type="submit"]').should('not.be.disabled').click();
-    cy.contains(/berhasil|success|sukses/i, {timeout: 5000}).should('be.visible');
+    cy.contains(/success/i, {timeout: 10000}).should('be.visible');
+    cy.url().should('includes', 'tab=semua');
+    cy.get('div.font-medium').contains(product.namaProduk).should('exist');
   });
 
   // terkadang small.text-primary butuh waktu lama untuk muncul sehingga ada kemungkinan test ini gagal
@@ -122,7 +126,29 @@ describe('Add Product Functionality', () => {
   
   it('should be able to add new product with variations as draft', function () {
     const product = this.products[2];
-    cy.log(product);
+    
+    cy.get('button').contains('Tambah Varian').should('be.visible');
+    cy.get('.row.w-100.mx-1.mt-2.mb-2').should('not.exist');
+    
+    cy.get('button').contains('Tambah Varian').should('be.visible').click();
+    cy.get('button').contains('Tambah Varian').should('not.exist');
+
+    const maxVariation = 3;
+
+    for(let i = 0; i < Math.min(product.variasi.length, maxVariation); i++) {
+      const { nama, pilihan } = product.variasi[i];
+      if (i === 0) {
+        addVariations(nama, pilihan);
+      } else {
+        addAnotherVariationType(nama, pilihan);
+      }
+    }
+    
+    if (product.variasi.length >= maxVariation) {
+      cy.get('button').contains('Tambahkan tipe varian').should('not.exist');
+    }
+
+    applyVariation();
   });
 
   it('should be able to add new product with variations as active product', () => {});

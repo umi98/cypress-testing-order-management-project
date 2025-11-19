@@ -35,11 +35,11 @@ export const ADD_PRODUCT_SELECTOR = [
   { label: 'SKU', selector: 'input#sku-product', type: 'input text', required: false },
   { label: 'Deskripsi Produk', selector: 'textarea#description-product', type: 'textarea', required: true },
   { label: 'Upload File', selector: 'input#doc', type: 'button', required: false },
+  { label: 'Upload Foto', selector: 'input#image-product', type: 'button', required: true},
   { label: 'Harga', selector: 'input[placeholder="Contoh : 85000 (masukkan angka saja tanpa titik, koma atau karakter lain)"]', type: 'input number', required: true },
   { label: 'Stok', selector: 'input#stock-product', type: 'input number', required: true },
   { label: 'Berat Produk', selector: 'input[placeholder="(Contoh : 200)"]', type: 'input number', required: true },
   { label: 'Volume', selector: 'input[placeholder="Panjang"]', type: 'input number', required: true },
   { label: 'Volume', selector: 'input[placeholder="Lebar"]', type: 'input number', required: true },
-  { label: 'Volume', selector: 'input[placeholder="Tinggi"]', type: 'input number', required: true },
-  { label: 'Upload Foto', selector: 'input#image-product', type: 'button', required: true}
+  { label: 'Volume', selector: 'input[placeholder="Tinggi"]', type: 'input number', required: true }
 ]
